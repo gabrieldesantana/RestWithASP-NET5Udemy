@@ -6,8 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RestWithASPNETUdemy.Models;
 using RestWithASPNETUdemy.Business;
-using RestWithASPNETUdemy.Data.VO;
-using RestWithASPNETUdemy.Hypermedia.Filters;
 
 namespace RestWithASPNETUdemy.Controllers
 {
@@ -39,33 +37,30 @@ namespace RestWithASPNETUdemy.Controllers
 
 
         [HttpGet("{id}")]
-        [TypeFilter(typeof(HyperMediaFilter))] //hateoas
         public IActionResult GetById(long id)
         {
-            var personVO = _personBusiness.FindById(id);
-            if (personVO == null) 
+            var person = _personBusiness.FindById(id);
+            if (person == null) 
                 return NotFound();
 
-            return Ok(personVO);
+            return Ok(person);
         }
 
         [HttpPost("")]
-        [TypeFilter(typeof(HyperMediaFilter))] //hateoas
-        public IActionResult Post([FromBody] PersonVO personVO)
+        public IActionResult Post([FromBody] Person person)
         {
-            if (personVO == null) 
+            if (person == null) 
                 return BadRequest();
-            return Ok(_personBusiness.Create(personVO));
+            return Ok(_personBusiness.Create(person));
         }
 
         [HttpPut]
-        [TypeFilter(typeof(HyperMediaFilter))] //hateoas
-        public IActionResult Put([FromBody] PersonVO personVO) 
+        public IActionResult Put([FromBody] Person person) 
         {
-            if (personVO == null)
+            if (person == null)
                 return BadRequest();
 
-            return Ok(_personBusiness.Update(personVO));
+            return Ok(_personBusiness.Update(person));
         }
 
 

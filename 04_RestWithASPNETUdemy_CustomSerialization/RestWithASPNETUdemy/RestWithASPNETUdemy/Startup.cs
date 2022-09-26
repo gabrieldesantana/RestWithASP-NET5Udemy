@@ -1,18 +1,20 @@
-using System;
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Net.Http.Headers;
-using RestWithASPNETUdemy.Hypermedia.Enricher;
-using RestWithASPNETUdemy.Hypermedia.Filters;
-using RestWithASPNETUdemy.IoC;
 using RestWithASPNETUdemy.Persistence;
+using RestWithASPNETUdemy.Business;
+using RestWithASPNETUdemy.Business.Implementations;
+using RestWithASPNETUdemy.Repository;
+using RestWithASPNETUdemy.Repository.Implementations;
 using Serilog;
+using System;
+using Microsoft.Data.SqlClient;
+using System.Collections.Generic;
+using Microsoft.Extensions.DependencyModel;
+using RestWithASPNETUdemy.IoC;
 
 namespace RestWithASPNETUdemy
 {
@@ -46,19 +48,6 @@ namespace RestWithASPNETUdemy
                 MigrateDatabase(connection);
             }
 
-            services.AddMvc(options =>
-            {
-                options.RespectBrowserAcceptHeader = true;
-                options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
-                options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
-            })
-            .AddXmlSerializerFormatters();
-
-            var filterOptions = new HyperMediaFilterOptions(); //hateoas
-            filterOptions.ContentResponseEnricherList.Add(new PersonEnricher()); //hateoas
-
-            services.AddSingleton(filterOptions);
-                 
             //Api versioning
             services.AddApiVersioning();
 
@@ -84,7 +73,6 @@ namespace RestWithASPNETUdemy
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
-                endpoints.MapControllerRoute("", "{controller=values}/{id?}"); //hateoas
             });
         }
 
