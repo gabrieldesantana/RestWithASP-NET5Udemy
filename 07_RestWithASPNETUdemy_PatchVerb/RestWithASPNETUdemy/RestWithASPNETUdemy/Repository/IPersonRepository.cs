@@ -7,5 +7,6 @@ namespace RestWithASPNETUdemy.Repository
     public interface IPersonRepository : IGenericRepository<Person>
     {
         Person Disable(long id);
+        List<Person> FindByName(string firstName, string secondName);
     }
 }

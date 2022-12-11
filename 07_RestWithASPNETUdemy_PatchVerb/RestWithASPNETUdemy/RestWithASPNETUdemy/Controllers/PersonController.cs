@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using RestWithASPNETUdemy.Models;
 using RestWithASPNETUdemy.Business;
 using RestWithASPNETUdemy.Data.VO;
 using RestWithASPNETUdemy.Hypermedia.Filters;
-using Microsoft.AspNetCore.Authorization;
 
 namespace RestWithASPNETUdemy.Controllers
 {
@@ -32,17 +28,35 @@ namespace RestWithASPNETUdemy.Controllers
         }
 
         
-        [HttpGet("")]
+        [HttpGet("{sortDirection}/{pageSize}/{page}")]
+        
+        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [ProducesResponseType((204))]
+        [ProducesResponseType((400))]
+        [ProducesResponseType((401))]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetAll([FromQuery] string name,
+            string sortDirection,
+            int pageSize,
+            int page)
+        {
+
+            return Ok(_personBusiness.FindWithPagedSearch(name, sortDirection, pageSize, page));
+        }
+
+        [HttpGet("findPersonByName")]
         //[TypeFilter(typeof(HyperMediaFilter))]
         [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
         [ProducesResponseType((204))]
         [ProducesResponseType((400))]
         [ProducesResponseType((401))]
-        public IActionResult GetAll()
+        public IActionResult GetByName([FromQuery] string firstName, [FromQuery] string lastName)
         {
-
-            return Ok(_personBusiness.FindAll());
+            var person = _personBusiness.FindByName(firstName, lastName);
+            if (person == null) return NotFound();
+            return Ok(person);
         }
+
 
 
         [HttpGet("{id}")]
