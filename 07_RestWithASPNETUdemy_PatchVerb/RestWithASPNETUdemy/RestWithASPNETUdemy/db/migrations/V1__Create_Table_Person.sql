@@ -6,7 +6,7 @@
 --	[gender] [varchar](6) NOT NULL,
 	
 --PRIMARY KEY CLUSTERED );
-
+Use rest_with_asp_net_udemy
 CREATE TABLE [person] (
 id BIGINT NOT NULL IDENTITY(1,1) PRIMARY KEY,
 [address] VARCHAR(100) NOT NULL,

@@ -89,10 +89,10 @@ namespace RestWithASPNETUdemy
             var connection = Configuration["MSSQLConnection:MSSQLConnectionString"];
             services.AddDbContext<MSSQLContext>(options => options.UseSqlServer(connection));
 
-            if (Environment.IsDevelopment())
-            {
-                MigrateDatabase(connection);
-            }
+            //if (Environment.IsDevelopment())
+            //{
+            //MigrateDatabase(connection);
+            //}
 
             services.AddMvc(options =>
             {
@@ -166,24 +166,24 @@ namespace RestWithASPNETUdemy
             });
         }
 
-        private void MigrateDatabase(string connection)
-        {
-            try
-            {
-                var evolveConnection = new SqlConnection(connection);
-                var evolve = new Evolve.Evolve(evolveConnection, msg => Log.Information(msg)) 
-                {
-                    Locations = new List<string> { "db/migrations", "db/dataset"},
-                    IsEraseDisabled = true,
-                };
-                evolve.Migrate();
-            }
-            catch (Exception ex)
-            {
-                Log.Error("Database migration failed", ex);
-                throw;
-            }
-        }
+        //private void MigrateDatabase(string connection)
+        //{
+        //    try
+        //    {
+        //        var evolveConnection = new SqlConnection(connection);
+        //        var evolve = new Evolve.Evolve(evolveConnection, msg => Log.Information(msg)) 
+        //        {
+        //            Locations = new List<string> { "db/migrations", "db/dataset"},
+        //            IsEraseDisabled = true,
+        //        };
+        //        evolve.Migrate();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error("Database migration failed", ex);
+        //        throw;
+        //    }
+        //}
 
         private static void RegisterServices(IServiceCollection services) 
         {

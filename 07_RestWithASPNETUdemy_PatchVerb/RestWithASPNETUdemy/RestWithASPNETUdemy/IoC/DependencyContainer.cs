@@ -6,6 +6,8 @@ using RestWithASPNETUdemy.Repository;
 using RestWithASPNETUdemy.Repository.Generic;
 using RestWithASPNETUdemy.Services;
 using RestWithASPNETUdemy.Services.Implementations;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Http;
 
 namespace RestWithASPNETUdemy.IoC
 {
@@ -17,6 +19,7 @@ namespace RestWithASPNETUdemy.IoC
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             services.AddScoped<IBookBusiness, BookBusinessImplementation>();
             services.AddScoped<ILoginBusiness, LoginBusinessImplementation>();
+            services.AddScoped<IFileBusiness, FileBusinessImplementation>();
             #endregion
 
             #region Repository Dependency
@@ -28,6 +31,7 @@ namespace RestWithASPNETUdemy.IoC
 
             #region Services Dependency
             services.AddTransient<ITokenService, TokenService>();
+            services.TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             #endregion
         }

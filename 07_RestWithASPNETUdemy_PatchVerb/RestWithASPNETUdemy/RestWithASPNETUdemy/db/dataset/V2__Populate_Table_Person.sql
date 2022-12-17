@@ -1,3 +1,4 @@
+Use rest_with_asp_net_udemy
 INSERT INTO [person] ([address], [first_name], [last_name], [gender]) 
 VALUES
 	('Sao Paulo - Brazil', 'Ayrton', 'Senna','Male'),
